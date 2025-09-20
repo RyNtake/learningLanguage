@@ -6,6 +6,9 @@ int main(void)
   int bev = 198;
   int milk = 138*2;
   float tax = 1.05;
-  printf("%4d  - (%4d + %4d)*%4f = %4d\n",bill,bev,milk,tax,(int)(bill - (bev + milk)*tax));
+
+  float price = (bev + milk)*tax;
+  int change = (int)(bill - price);
+  printf("%4d\n",change);
   return 0;
 }
