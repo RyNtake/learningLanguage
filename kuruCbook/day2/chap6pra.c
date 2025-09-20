@@ -6,5 +6,5 @@ int main(void)
 int price;
 printf("定価を入力してください：");
 scanf("%d", &price);
-printf(" => 1割引：%f,3割引：%f,5割引：%f,8割引：%f\n",price*0.9,price*0.7,price*0.5,price*0.2);
+printf(" => 1割引：%d円,3割引：%d円,5割引：%d円,8割引：%d円\n",(int)(price*0.9),(int)(price*0.7),(int)(price*0.5),(int)(price*0.2));
 }
