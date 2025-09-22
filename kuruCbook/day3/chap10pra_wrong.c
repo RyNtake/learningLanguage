@@ -8,10 +8,10 @@ int main(void)
   do
   {
     printf("テストの点数を0-100で入力してください。：");
-    scanf("%lf",&point);
+    scanf("%f",&point); // double型を代入する場合、フォーマット指定子は"%lf"にする。
   } while (point < 0 || point > 100);
 
-  printf("テストの点数は%3d点です\n",(int)point);
+  printf("テストの点数は%3d点です\n",(int)(point));
 
   return 0;
 }
