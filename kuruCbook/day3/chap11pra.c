@@ -31,6 +31,6 @@ int main(void)
 
 int olympicYearJudge(int year)
 {
-  int whitchSeason = year % 4;
-  return whitchSeason;
+  int whichSeason = year % 4;
+  return whichSeason;
 }
