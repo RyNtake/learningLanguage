@@ -12,19 +12,17 @@ int main(void)
    * 【ヒント】 最小値を探すには、最大値を記憶した変数との比較を繰り返せば良い。
    * */
 
-  int input[10];
-  int max,min;
-  max = -1;
-  min = 100;
+  int i = 0,input[10],max,min;
 
-  for (int i = 0; i < 10; i++)
+  do
   {
     do
     {
       printf("%dつ目の整数を入力(0-100)。-1を入力するとそこまでの数だけ参照：",i+1);
       scanf("%d",&input[i]);
     } while (input[i] < -1 || input[i] > 100);
-  }
+    i++;
+  } while (input[i - 1] != -1);
 
   sizeChecker(&max,&min,input);
   printf("max : %d, min : %d\n",max,min);
@@ -34,22 +32,16 @@ int main(void)
 
 void sizeChecker(int *max,int *min,int *input)
 {
-  for (int i = 0; i < 10; i++)
+  int i = 0;
+
+  *max = 0;
+  *min = 100;
+
+  while (input[i] != -1)
   {
-    if (input[i] == -1)
-    {
-      return;
-    }
-
-    if(input[i] > *max)
-    {
-      *max = input[i];
-    }
-    else if (input[i] < *min)
-    {
-      *min = input[i];
-    }
-
+    if(input[i] > *max)*max = input[i];
+    if(input[i] < *min)*min = input[i];
+    i++;
   }
 
 }
