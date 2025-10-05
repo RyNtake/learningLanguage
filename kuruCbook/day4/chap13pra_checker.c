@@ -1,8 +1,3 @@
-#include <stdio.h>
-#include <math.h>
-
-int main(void)
-{
   /**入力された10個の数字を最後から表示するプログラム
    * [自作問題]
    * 1. 整数以外が入力された場合は再入力を促す。
@@ -12,38 +7,60 @@ int main(void)
    * 2. (今やらなくていい）入力数が巨大すぎても対応できるようにする。
    *  double型を導入する
    */
-  int array[10];
-  float inputFig;
-  int integer_port;
-  int checker;
 
-  for (int i = 0; i <= 10; i++)
-  {
-    do
-    {
-      printf("%2dつ目の整数を入力してください。:", i + 1);
-      scanf("%f", &inputFig);
-      integer_port = (int)inputFig;
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
-      if(integer_port - inputFig == 0) //元の入力＝キャスト後とできれば、小数部を丸めても変化なし、と判断できる。
-      {
-        checker = 1;
-      }
-      else
-      {
-        checker = 0;
-      }
-    } while (checker = 0);
+#define NUM_COUNT 10
+#define BUFFER_SIZE 100
 
-    array[i] = integer_port;
-  }
+// 整数文字列チェック関数
+int isInteger(const char *str) {
+    if (*str == '-' || *str == '+') str++;  // 符号対応
+    if (*str == '\0') return 0;              // 符号だけはNG
 
-  for (int i = 10-1; i >= 0; i--)
-  {
-    printf("%d ", array[i]);
-  }
+    while (*str) {
+        if (!isdigit(*str)) return 0;
+        str++;
+    }
+    return 1;
+}
 
-  printf("\n");
+int main(void) {
+    long long numbers[NUM_COUNT];
+    char buffer[BUFFER_SIZE];
 
-  return 0;
+    printf("整数を %d 個入力してください（1入力ごとにEnterを押します）:\n", NUM_COUNT);
+
+    for (int i = 0; i < NUM_COUNT; i++) {
+        while (1) {
+            printf("%d個目の入力: ", i + 1);
+            if (fgets(buffer, sizeof(buffer), stdin) == NULL) {
+                printf("入力エラーが発生しました。もう一度入力してください。\n");
+                continue;
+            }
+
+            // 改行除去
+            buffer[strcspn(buffer, "\n")] = '\0';
+
+            // 整数チェック
+            if (!isInteger(buffer)) {
+                printf("整数ではありません。もう一度入力してください。\n");
+                continue;
+            }
+
+            // long long に変換
+            numbers[i] = atoll(buffer);
+            break;
+        }
+    }
+
+    printf("\n--- 逆順で表示します ---\n");
+    for (int i = NUM_COUNT - 1; i >= 0; i--) {
+        printf("%lld\n", numbers[i]);
+    }
+
+    return 0;
 }
