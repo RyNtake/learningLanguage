@@ -1,8 +1,3 @@
-#include <stdio.h>
-#include <string.h>
-
-int main(void)
-{
   /**苗字と名前を別々に入力させて、それを結合して表示するプログラム
    * [自作問題]
    * 1. sprint関数を利用すること　OK
@@ -16,32 +11,64 @@ int main(void)
    * 4. スペースを導入　OK
    *  */
 
-  char fullName[21];
-  char lastName[11];
-  char space[] = " ";
-  char firstName[10];
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 
-  printf("名字を入力してください：");
+#define MAX_LEN 20  // 各入力の最大文字数
 
-  do
-  {
-    scanf("%s",lastName);
-  } while (condition);
+// 入力がローマ字のみで構成されているかチェック
+int is_valid_roman(const char *str) {
+    for (int i = 0; str[i] != '\0'; i++) {
+        if (!isalpha((unsigned char)str[i])) { // アルファベット以外ならNG
+            return 0;
+        }
+    }
+    return 1;
+}
 
-  strcat(lastName,space);
-  printf("名前を入力してください：");
+// 安全に文字列を取得する関数
+void input_roman_name(char *buffer, const char *prompt) {
+    while (1) {
+        printf("%s (最大%d文字): ", prompt, MAX_LEN - 1);
+        if (fgets(buffer, MAX_LEN + 5, stdin) == NULL) {
+            printf("入力エラーが発生しました。\n");
+            continue;
+        }
 
-  do
-  {
-    scanf("%s",firstName);
-  } while (condition);
+        // 改行文字を除去
+        buffer[strcspn(buffer, "\n")] = '\0';
 
+        // 文字数チェック
+        if (strlen(buffer) >= MAX_LEN) {
+            printf("⚠️ 入力が長すぎます。%d文字以内で入力してください。\n", MAX_LEN - 1);
+            continue;
+        }
 
+        // 入力内容のバリデーション
+        if (!is_valid_roman(buffer)) {
+            printf("⚠️ ローマ字以外の文字が含まれています。もう一度入力してください。\n");
+            continue;
+        }
 
-  printf("あなたの名前は、");
-  sprintf(fullName,"%s%s",lastName,firstName);
-  printf("%s",fullName);
-  printf("です。\n");
+        break;
+    }
+}
 
-  return 0;
+int main(void) {
+    char first_name[MAX_LEN];
+    char last_name[MAX_LEN];
+    char full_name[MAX_LEN * 2 + 2]; // 姓＋空白＋名＋終端分
+
+    printf("=== 名前入力プログラム ===\n");
+
+    input_roman_name(last_name, "苗字を入力してください");
+    input_roman_name(first_name, "名前を入力してください");
+
+    // sprintfで結合
+    sprintf(full_name, "%s %s", last_name, first_name);
+
+    printf("\nあなたのフルネームは: %s\n", full_name);
+
+    return 0;
 }
